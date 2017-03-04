@@ -1,0 +1,22 @@
+{
+  "name": "reactitems",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "^15.0.14",
+    "@types/react-dom": "^0.14.23",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.1.5",
+    "typescript": "^2.2.1"
+  }
+}

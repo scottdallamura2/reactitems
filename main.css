@@ -1,0 +1,31 @@
+.two-panel-container {
+    width: 100%;
+    display: table-row;
+}
+.left-panel {
+    width: 300px;
+    display: table-cell;
+}
+.right-panel {
+    width: 600px;
+    display: table-cell;
+    padding-left: 10px;
+}
+
+.item-overview {
+    border: 1px solid lightgray;
+    margin: 4px;
+    cursor: pointer;
+}
+
+.item-overview.selected {
+    border: 1px solid blue;
+}
+
+.field-input-container {
+    padding-bottom: 10px;
+}
+
+.field-input-container.dirty .field-label {
+    font-weight: bold;
+}
