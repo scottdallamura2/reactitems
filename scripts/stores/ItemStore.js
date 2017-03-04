@@ -20,6 +20,8 @@ define(["require", "exports", "../actions/ItemActions", "../models/ItemModel", "
             this._onPropertyValueChanged = (payload) => {
                 let item = this._items[payload.itemId];
                 if (item) {
+                    // a separate action for each property would be cleaner, but for demo purposes this is sufficient:
+                    // we can set the "user-defined" fields with the fieldValueChangedAction and the "well-known" fields here
                     switch (payload.propertyName) {
                         case "name":
                             item.name.setValue(payload.newValue);
