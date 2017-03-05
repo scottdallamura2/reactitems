@@ -1,37 +1,25 @@
 define(["require", "exports", "react", "../contracts/Field", "../actions/ItemActions", "../stores/ItemStore", "./ItemsOverview", "./ItemDetail"], function (require, exports, React, Field_1, ItemActions_1, ItemStore_1, ItemsOverview_1, ItemDetail_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    let Perf = React.addons.Perf;
     // scenario setup
-    let item1 = {
-        id: 1,
-        name: "my first item",
-        enabled: true,
-        description: "",
-        fieldDefinitions: [
-            { name: "textField", type: Field_1.FieldTypes.String },
-            { name: "booleanField", type: Field_1.FieldTypes.Boolean },
-        ],
-        fieldValues: {}
-    };
-    item1.fieldValues["textField"] = "text value";
-    item1.fieldValues["booleanField"] = "true";
-    let item2 = {
-        id: 2,
-        name: "my second item",
-        enabled: false,
-        description: "initially disabled",
-        fieldDefinitions: [
-            { name: "textField", type: Field_1.FieldTypes.String },
-            { name: "booleanField", type: Field_1.FieldTypes.Boolean },
-            { name: "anotherField", type: Field_1.FieldTypes.String },
-        ],
-        fieldValues: {}
-    };
-    item2.fieldValues["textField"] = "";
-    item2.fieldValues["booleanField"] = "false";
-    item2.fieldValues["anotherField"] = "another value";
-    ItemActions_1.ItemActions.itemAdded.invoke(item1);
-    ItemActions_1.ItemActions.itemAdded.invoke(item2);
+    for (var i = 1; i < 101; i++) {
+        let item = {
+            id: i,
+            name: "item " + i,
+            enabled: true,
+            description: "item " + i + " description",
+            fieldDefinitions: [],
+            fieldValues: {}
+        };
+        for (var j = 1; j < 51; j++) {
+            item.fieldDefinitions.push({ name: "textField " + j, type: Field_1.FieldTypes.String });
+            item.fieldDefinitions.push({ name: "booleanField " + j, type: Field_1.FieldTypes.Boolean });
+            item.fieldValues["textField " + j] = "text value " + j;
+            item.fieldValues["booleanField " + j] = ((j % 2) === 0).toString();
+        }
+        ItemActions_1.ItemActions.itemAdded.invoke(item);
+    }
     class MainControllerView extends React.Component {
         constructor() {
             super();
@@ -43,9 +31,11 @@ define(["require", "exports", "react", "../contracts/Field", "../actions/ItemAct
                 ItemActions_1.ItemActions.itemsSaved.invoke({});
             };
             this._onItemStoreChanged = () => {
+                Perf.start();
                 this.setState(this._getState());
             };
             this._onItemSelected = (item) => {
+                Perf.start();
                 this.setState(this._getState(item));
             };
             this.state = this._getState();
@@ -66,6 +56,11 @@ define(["require", "exports", "react", "../contracts/Field", "../actions/ItemAct
         }
         componentWillUnmount() {
             this._itemStore.removeListener(this._onItemStoreChanged);
+        }
+        componentDidUpdate() {
+            Perf.stop();
+            Perf.printInclusive();
+            Perf.printWasted();
         }
         _getState(selectedItem) {
             let items = this._itemStore.getItems();
